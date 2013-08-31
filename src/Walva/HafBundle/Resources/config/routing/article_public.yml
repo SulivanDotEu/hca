@@ -1,0 +1,11 @@
+article_public:
+    pattern:  /
+    defaults: { _controller: "WalvaHafBundle:PublicArticle:index" }
+
+article_public_list:
+    pattern:  /page/{page}
+    defaults: { _controller: "WalvaHafBundle:PublicArticle:index" }
+
+article_public_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "WalvaHafBundle:PublicArticle:show" }

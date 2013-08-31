@@ -1,0 +1,11 @@
+livre_public:
+    pattern:  /
+    defaults: { _controller: "WalvaHafBundle:Livre:index" }
+
+livre_public_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "WalvaHafBundle:Livre:show" }
+
+livre_public_menu:
+    pattern:  /menu
+    defaults: { _controller: "WalvaHafBundle:Livre:menu" }

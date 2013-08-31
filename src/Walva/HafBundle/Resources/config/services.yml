@@ -1,0 +1,10 @@
+parameters:
+#    walva_haf.example.class: Walva\HafBundle\Example
+
+services:
+  walva_haf.langue:
+    class: Walva\HafBundle\Langue\LangueManager
+    arguments: [@session]
+#    walva_haf.example:
+#        class: %walva_haf.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

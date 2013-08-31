@@ -1,0 +1,26 @@
+/* 
+    Document   : walvaCss
+    Created on : 27-août-2013, 14:01:20
+    Author     : Benjamin
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.myContent{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: white;
+}
+
+#header { background: url(../img/tests1.png) no-repeat; }
+
+.sousMenuDroite{
+    border-bottom: 1px solid #eee;
+    list-style-type: none;
+    margin: 0 0 7px;
+    padding: 0 0 5px 15px;
+    word-wrap: break-word;
+}
