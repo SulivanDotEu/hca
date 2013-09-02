@@ -124,12 +124,7 @@ class ArticleController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $editForm->remove('image');
-        $editForm->add('image', 'entity', array(
-                    'class' => 'WalvaHafBundle:Image',
-                    'multiple' => 'false',
-                    'required' => false
-                ));
+        
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('WalvaHafBundle:Article:edit.html.twig', array(
@@ -152,6 +147,13 @@ class ArticleController extends Controller
             'action' => $this->generateUrl('article_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
+        
+        $form->remove('image');
+        $form->add('image', 'entity', array(
+                    'class' => 'WalvaHafBundle:Image',
+                    'multiple' => false,
+                    'required' => false
+                ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 

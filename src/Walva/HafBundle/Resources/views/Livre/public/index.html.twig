@@ -11,7 +11,7 @@
 
 
 {% block main_content -%}
-<h1>Nos derniers articles et nouvelles</h1>
+<h1>Les livres que nous avons lu pour vous</h1>
 <hr/>
 
 {% for entity in entities %}
@@ -33,7 +33,7 @@
         </div>
         {% endif %}
         
-        <h2><a href="{{ path('article_public_show', { 'id': entity.id }) }}" title="{{ entity.titre }}">
+        <h2><a href="{{ path('livre_public_show', { 'id': entity.id }) }}" title="{{ entity.titre }}">
                 {{ entity.titre }}</a>
         </h2>
         <p class="byline ">
@@ -42,16 +42,10 @@
                 </span>
             </span>
             <br>
-            {% if entity.tag is not null %}
-            {% for tag in entity.tag %}
-               <span class="label label-success">{{ tag }}</span>
-            {% endfor %}
-
-            {% endif %}
         </p>
         
-        <p>{{ entity.Resume}}
-            <a href="{{ path('article_public_show', { 'id': entity.id }) }}" class="more-link">[En savoir plus...]</a></p></div>
+        <p>{{ entity.contenu | slice(0, 200)}}
+            <a href="{{ path('livre_public_show', { 'id': entity.id }) }}" class="more-link">[En savoir plus...]</a></p></div>
 
 </div>
 <hr/>

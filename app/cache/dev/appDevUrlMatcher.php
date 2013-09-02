@@ -615,47 +615,23 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     return $this->redirect($pathinfo.'/', 'livre_public');
                 }
 
-                return array (  '_controller' => 'Walva\\HafBundle\\Controller\\LivreController::indexAction',  '_route' => 'livre_public',);
+                return array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicLivreController::indexAction',  '_route' => 'livre_public',);
+            }
+
+            // livre_public_list
+            if (0 === strpos($pathinfo, '/livre/page') && preg_match('#^/livre/page/(?P<page>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'livre_public_list')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicLivreController::indexAction',));
             }
 
             // livre_public_show
             if (preg_match('#^/livre/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'livre_public_show')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\LivreController::showAction',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'livre_public_show')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicLivreController::showAction',));
             }
 
             // livre_public_menu
             if ($pathinfo === '/livre/menu') {
-                return array (  '_controller' => 'Walva\\HafBundle\\Controller\\LivreController::menuAction',  '_route' => 'livre_public_menu',);
+                return array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicLivreController::menuAction',  '_route' => 'livre_public_menu',);
             }
-
-        }
-
-        if (0 === strpos($pathinfo, '/console')) {
-            // console
-            if (rtrim($pathinfo, '/') === '/console') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_console;
-                }
-
-                if (substr($pathinfo, -1) !== '/') {
-                    return $this->redirect($pathinfo.'/', 'console');
-                }
-
-                return array (  '_controller' => 'CoreSphere\\ConsoleBundle\\Controller\\ConsoleController::consoleAction',  '_route' => 'console',);
-            }
-            not_console:
-
-            // console_exec
-            if (preg_match('#^/console(?:\\.(?P<_format>json))?$#s', $pathinfo, $matches)) {
-                if ($this->context->getMethod() != 'POST') {
-                    $allow[] = 'POST';
-                    goto not_console_exec;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'console_exec')), array (  '_controller' => 'CoreSphere\\ConsoleBundle\\Controller\\ConsoleController::execAction',  '_format' => 'json',));
-            }
-            not_console_exec:
 
         }
 

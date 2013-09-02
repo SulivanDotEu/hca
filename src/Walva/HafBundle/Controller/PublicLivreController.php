@@ -13,50 +13,62 @@ use Walva\HafBundle\Form\LivreType;
  */
 class PublicLivreController extends Controller {
 
-    public function menuAction($nombre) {
-        $repository = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Livre');
-        $entities = $repository->findBy(
-                array(), array('dateCreation' => 'desc'), // On tri par date dÃ©croissante
-                $nombre, // On sÃ©lectionne $nombre articles
-                0 // A partir du premier
-        );
-        return $this->render('WalvaHafBundle:Livre:public\menu.html.twig', array(
-                    'entities' => $entities
-                ));
-    }
+   public function menuAction($nombre) {
+      $repository = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Livre');
+      $entities = $repository->findBy(
+              array(), array('dateCreation' => 'desc'), // On tri par date dÃ©croissante
+              $nombre, // On sÃ©lectionne $nombre articles
+              0 // A partir du premier
+      );
+      return $this->render('WalvaHafBundle:Livre:public\menu.html.twig', array(
+                  'entities' => $entities
+              ));
+   }
 
-    /**
-     * Lists all Livre entities.
-     *
-     */
-    public function indexAction() {
-        $em = $this->getDoctrine()->getManager();
+   /**
+    * Lists all Livre entities.
+    *
+    */
+   public function indexAction($page = 1, $nombre = 10) {
+      $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('WalvaHafBundle:Livre')->findAll();
+      $entities = $em->getRepository('WalvaHafBundle:Livre')->findAll();
 
-        return $this->render('WalvaHafBundle:Livre:index.html.twig', array(
-                    'entities' => $entities,
-                ));
-    }
+      $em = $this->getDoctrine()->getManager();
+      $lm = $this->container->get('walva_haf.langue');
 
-    /**
-     * Finds and displays a Article entity.
-     *
-     */
-    public function showAction($id) {
-        $em = $this->getDoctrine()->getManager();
+      $qb = $em->createQueryBuilder();
+      $qb->select('count(a.id)');
+      $qb->from('WalvaHafBundle:Livre', 'a');
 
-        $entity = $em->getRepository('WalvaHafBundle:Article')->find($id);
+      $pageCount = ceil($qb->getQuery()->getSingleScalarResult() / $nombre);
+      if (($page + 1) > $pageCount)
+         $next = false;
+      else
+         $next = true;
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Article entity.');
-        }
+      return $this->render('WalvaHafBundle:Livre:public/index.html.twig', array(
+                  'entities' => $entities,
+                  'page' => $page,
+                  'next' => $next,
+              ));
+   }
 
-        $deleteForm = $this->createDeleteForm($id);
+   /**
+    * Finds and displays a Article entity.
+    *
+    */
+   public function showAction($id) {
+      $em = $this->getDoctrine()->getManager();
 
-        return $this->render('WalvaHafBundle:Article:public/show.html.twig', array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),));
-    }
+      $entity = $em->getRepository('WalvaHafBundle:Livre')->find($id);
+
+      if (!$entity) {
+         throw $this->createNotFoundException('Unable to find Livre entity.');
+      }
+
+      return $this->render('WalvaHafBundle:Livre:public/show.html.twig', array(
+                  'entity' => $entity,));
+   }
 
 }

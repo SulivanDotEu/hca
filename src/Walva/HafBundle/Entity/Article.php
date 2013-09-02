@@ -98,7 +98,7 @@ class Article {
     private $reference;
 
     /**
-     * @ORM\OneToOne(targetEntity="Image", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $image;
