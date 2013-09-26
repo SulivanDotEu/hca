@@ -2,6 +2,9 @@ w_haf:
     resource: "@WalvaHafBundle/Resources/config/routing.yml"
     prefix:   /
 
+w_haf_static:
+    resource: "@WalvaHafBundle/Resources/config/routing/static_content.yml"
+    prefix:   /{langue}
 
 w_haf_article:
         resource: "@WalvaHafBundle/Resources/config/routing/article.yml"

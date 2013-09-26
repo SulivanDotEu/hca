@@ -134,8 +134,27 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // walva_haf_homepage
-        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'walva_haf_homepage')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\DefaultController::indexAction',));
+        if (rtrim($pathinfo, '/') === '') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'walva_haf_homepage');
+            }
+
+            return array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::indexAction',  '_route' => 'walva_haf_homepage',);
+        }
+
+        // walva_haf_admin
+        if ($pathinfo === '/admin') {
+            return array (  '_controller' => 'Walva\\HafBundle\\Controller\\ArticleController::indexAction',  '_route' => 'walva_haf_admin',);
+        }
+
+        // static_articles_et_nouvelles
+        if (preg_match('#^/(?P<langue>[^/]++)/article_et_nouvelles$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'static_articles_et_nouvelles')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\StaticContentController::ArticleEtNouvellesAction',));
+        }
+
+        // haf_contact
+        if (preg_match('#^/(?P<langue>[^/]++)/contact$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'haf_contact')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\StaticContentController::ContactAction',));
         }
 
         if (0 === strpos($pathinfo, '/a')) {
@@ -209,9 +228,40 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     return array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::indexAction',  '_route' => 'article_public',);
                 }
 
+                // article_big_list
+                if ($pathinfo === '/article/articles_et_nouvelles') {
+                    return array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::bigListAction',  '_route' => 'article_big_list',);
+                }
+
                 // article_public_list
                 if (0 === strpos($pathinfo, '/article/page') && preg_match('#^/article/page/(?P<page>[^/]++)$#s', $pathinfo, $matches)) {
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'article_public_list')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::indexAction',));
+                }
+
+                if (0 === strpos($pathinfo, '/article/tag')) {
+                    // article_public_list_tag
+                    if (preg_match('#^/article/tag/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'article_public_list_tag')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::listByTagAction',));
+                    }
+
+                    // article_public_list_tag_and_page
+                    if (preg_match('#^/article/tag/(?P<id>[^/]++)/page/(?P<page>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'article_public_list_tag_and_page')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::listByTagAction',));
+                    }
+
+                }
+
+                if (0 === strpos($pathinfo, '/article/cat')) {
+                    // article_public_list_categorie
+                    if (preg_match('#^/article/cat/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'article_public_list_categorie')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::listByCategorieAction',));
+                    }
+
+                    // article_public_list_categorie_and_page
+                    if (preg_match('#^/article/cat/(?P<id>[^/]++)/page/(?P<page>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'article_public_list_categorie_and_page')), array (  '_controller' => 'Walva\\HafBundle\\Controller\\PublicArticleController::listByCategorieAction',));
+                    }
+
                 }
 
                 // article_public_show

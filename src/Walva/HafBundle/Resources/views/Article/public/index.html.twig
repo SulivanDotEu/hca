@@ -1,3 +1,4 @@
+{% set current_page_name = 'article' %}
 {% extends 'WalvaHafBundle:Article:public/layout.html.twig' %}
 
 
@@ -42,6 +43,7 @@
                     </span>
                 </span>
                 <br>
+                <span class="label label-inverse">{{ entity.categorie }}</span>
             {% if entity.tag is not null %}
             {% for tag in entity.tag %}
                 <span class="label label-success">{{ tag }}</span>
@@ -62,13 +64,26 @@
   <li class="previous {% if page == 1%} disabled {% endif%}">
       {% if page == 1%}
 {% else %}
-<a href="{{ path('article_public_list', { 'page': page - 1 }) }}">&larr; Précédent</a>
+        {% if categorie is defined %}
+          <a href="{{ path('article_public_list_categorie_and_page', { 'page': page - 1, 'id':categorie.id }) }}">&larr; Précédent</a>
+        {% else %}  
+          <a href="{{ path('article_public_list', { 'page': page - 1 }) }}">&larr; Précédent</a>
+
+        {% endif %}
 {% endif %}
   </li>
   
   <li class="next {% if not next %}disabled {% endif%}">
       {% if next  %}
-    <a href="{{ path('article_public_list', { 'page': page + 1 }) }}">Suivant &rarr;</a>
+          {% if categorie is defined %}
+          <a href="{{ path('article_public_list_categorie_and_page', { 'page': page + 1, 'id':categorie.id }) }}">Suivant &rarr;</a>
+        
+{% elseif tag is defined%}  
+          <a href="{{ path('article_public_list_tag_and_page', { 'page': page + 1, 'id':tag.id }) }}">Suivant &rarr;</a>
+{% else %}  
+          <a href="{{ path('article_public_list', { 'page': page + 1 }) }}">Suivant &rarr;</a>
+
+        {% endif %}
     {% else %}
     
     {% endif %}

@@ -7,12 +7,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Walva\HafBundle\Entity\Article;
 use Walva\HafBundle\Form\ArticleType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Walva\HafBundle\Entity\Categorie;
+use Walva\HafBundle\Entity\Tag;
 
 /**
  * Article controller.
  *
  */
 class PublicArticleController extends Controller {
+
+    public function bigListAction() {
+        $repositoryCat = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Categorie');
+        $repositoryTag = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Tag');
+
+        $tags = $repositoryTag->findAll();
+        $categories = $repositoryCat->findAll();
+
+        return $this->render('WalvaHafBundle:Article:public\big_list.html.twig', array(
+                    'tags' => $tags,
+                    'categories' => $categories
+                ));
+    }
 
     public function menuAction($nombre) {
         $repository = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Article');
@@ -31,7 +46,7 @@ class PublicArticleController extends Controller {
      * Lists all Article entities.
      *
      */
-    public function indexAction($page = 1, $nombre = 10) {
+    public function indexAction($page = 1, $nombre = 10, Categorie $categorie = null) {
         $session = new Session();
         $session->start();
 
@@ -45,6 +60,10 @@ class PublicArticleController extends Controller {
         $qb->from('WalvaHafBundle:Article', 'a');
 
         $pageCount = ceil($qb->getQuery()->getSingleScalarResult() / $nombre);
+
+
+
+
         if (($page + 1) > $pageCount)
             $next = false;
         else
@@ -52,6 +71,70 @@ class PublicArticleController extends Controller {
 
         return $this->render('WalvaHafBundle:Article:public/index.html.twig', array(
                     'entities' => $entities,
+                    'page' => $page,
+                    'next' => $next,
+                ));
+    }
+
+    public function listByCategorieAction($page = 1, $nombre = 10, Categorie $categorie = null) {
+        $session = new Session();
+        $session->start();
+
+        $em = $this->getDoctrine()->getManager();
+        $lm = $this->container->get('walva_haf.langue');
+
+        $entities = $em->getRepository('WalvaHafBundle:Article')->findBy(
+                array('categorie' => $categorie), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
+
+
+        $count = count($em->getRepository('WalvaHafBundle:Article')->findBy(array('categorie' => $categorie)));
+
+        $pageCount = ceil($count / $nombre);
+
+
+
+
+        if (($page + 1) > $pageCount)
+            $next = false;
+        else
+            $next = true;
+
+        return $this->render('WalvaHafBundle:Article:public/index.html.twig', array(
+                    'entities' => $entities,
+                    'categorie' => $categorie,
+                    'page' => $page,
+                    'next' => $next,
+                ));
+    }
+
+    public function listByTagAction($page = 1, $nombre = 10, Tag $tag = null) {
+        $session = new Session();
+        $session->start();
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('WalvaHafBundle:Article');
+        $lm = $this->container->get('walva_haf.langue');
+
+        $entities = $repository->findBy(
+                array('tag' => $tag), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
+
+        //$em=$this->getDoctrine()->getEntityManager()->getR
+
+        $count = count($em->getRepository('WalvaHafBundle:Article')->findBy(array('tag' => $tag)));
+
+        $pageCount = ceil($count / $nombre);
+
+
+
+
+        if (($page + 1) > $pageCount)
+            $next = false;
+        else
+            $next = true;
+
+        return $this->render('WalvaHafBundle:Article:public/index.html.twig', array(
+                    'entities' => $entities,
+                    'tag' => $tag,
                     'page' => $page,
                     'next' => $next,
                 ));
