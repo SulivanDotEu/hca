@@ -4,37 +4,35 @@ namespace Walva\HafBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Walva\HafBundle\Entity\Article;
 use Walva\HafBundle\Form\ArticleType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Article controller.
  *
  */
-class ArticleController extends Controller
-{
+class ArticleController extends Controller {
 
     /**
      * Lists all Article entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('WalvaHafBundle:Article')->findAll();
 
         return $this->render('WalvaHafBundle:Article:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Article entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Article();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -48,20 +46,19 @@ class ArticleController extends Controller
         }
 
         return $this->render('WalvaHafBundle:Article:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
     /**
-    * Creates a form to create a Article entity.
-    *
-    * @param Article $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createCreateForm(Article $entity)
-    {
+     * Creates a form to create a Article entity.
+     *
+     * @param Article $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Article $entity) {
         $form = $this->createForm(new ArticleType(), $entity, array(
             'action' => $this->generateUrl('article_create'),
             'method' => 'POST',
@@ -76,14 +73,13 @@ class ArticleController extends Controller
      * Displays a form to create a new Article entity.
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Article();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('WalvaHafBundle:Article:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -91,8 +87,7 @@ class ArticleController extends Controller
      * Finds and displays a Article entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('WalvaHafBundle:Article')->find($id);
@@ -102,19 +97,18 @@ class ArticleController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        
+
 
         return $this->render('WalvaHafBundle:Article:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),));
     }
 
     /**
      * Displays a form to edit an existing Article entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('WalvaHafBundle:Article')->find($id);
@@ -124,47 +118,46 @@ class ArticleController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        
+
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('WalvaHafBundle:Article:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Article entity.
-    *
-    * @param Article $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Article $entity)
-    {
+     * Creates a form to edit a Article entity.
+     *
+     * @param Article $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Article $entity) {
         $form = $this->createForm(new ArticleType(), $entity, array(
             'action' => $this->generateUrl('article_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-        
+
         $form->remove('image');
         $form->add('image', 'entity', array(
-                    'class' => 'WalvaHafBundle:Image',
-                    'multiple' => false,
-                    'required' => false
-                ));
+            'class' => 'WalvaHafBundle:Image',
+            'multiple' => false,
+            'required' => false
+        ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
+
     /**
      * Edits an existing Article entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('WalvaHafBundle:Article')->find($id);
@@ -183,17 +176,17 @@ class ArticleController extends Controller
         }
 
         return $this->render('WalvaHafBundle:Article:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Article entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -219,14 +212,14 @@ class ArticleController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('article_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete',
-                'attr' => array('class' => 'btn')))
-            ->getForm()
+                        ->setAction($this->generateUrl('article_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete',
+                            'attr' => array('class' => 'btn')))
+                        ->getForm()
         ;
     }
+
 }

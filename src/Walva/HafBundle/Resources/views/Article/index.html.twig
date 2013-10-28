@@ -17,6 +17,7 @@
     <thead>
         <tr>
             <th>Id</th>
+            <th>Slug</th>
             <th>Categorie</th>
             <th>Langue</th>
             <th>Titre</th>
@@ -30,6 +31,7 @@
 {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('article_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.slug }}</td>
                 <td>{% if entity.categorie  %}{{ entity.categorie }}{% endif %}</td>
 
                 <td>{{ entity.langue }}</td>

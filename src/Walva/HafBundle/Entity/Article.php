@@ -3,6 +3,7 @@
 namespace Walva\HafBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Article
@@ -78,7 +79,7 @@ class Article {
      * @ORM\JoinColumn(nullable=true)
      */
     private $auteur;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Categorie")
      * @ORM\JoinColumn(nullable=true)
@@ -103,6 +104,11 @@ class Article {
      */
     private $image;
 
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=false)
+     */
+    private $slug;
 
     /**
      * Get id
@@ -365,17 +371,15 @@ class Article {
         $this->reference->removeElement($reference);
     }
 
-
     /**
      * Set image
      *
      * @param \Walva\HafBundle\Entity\Image $image
      * @return Article
      */
-    public function setImage(\Walva\HafBundle\Entity\Image $image = null)
-    {
+    public function setImage(\Walva\HafBundle\Entity\Image $image = null) {
         $this->image = $image;
-    
+
         return $this;
     }
 
@@ -384,8 +388,7 @@ class Article {
      *
      * @return \Walva\HafBundle\Entity\Image 
      */
-    public function getImage()
-    {
+    public function getImage() {
         return $this->image;
     }
 
@@ -395,10 +398,9 @@ class Article {
      * @param \Walva\HafBundle\Entity\Categorie $categorie
      * @return Article
      */
-    public function setCategorie(\Walva\HafBundle\Entity\Categorie $categorie = null)
-    {
+    public function setCategorie(\Walva\HafBundle\Entity\Categorie $categorie = null) {
         $this->categorie = $categorie;
-    
+
         return $this;
     }
 
@@ -407,8 +409,18 @@ class Article {
      *
      * @return \Walva\HafBundle\Entity\Categorie 
      */
-    public function getCategorie()
-    {
+    public function getCategorie() {
         return $this->categorie;
     }
+
+    public function getSlug() {
+        return $this->slug;
+    }
+
+    public function setSlug($slug) {
+        $this->slug = $slug;
+        return $this;
+    }
+
+
 }

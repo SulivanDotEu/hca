@@ -15,7 +15,9 @@ class ArticleType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('dateCreation')
+                ->add('dateCreation', 'date', array(
+    'years' => range(1990,2030)
+   ))
                 ->add('langue', 'choice', array(
                     'choices' => array(
                         'fr' => 'français',

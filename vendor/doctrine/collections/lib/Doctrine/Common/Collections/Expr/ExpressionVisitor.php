@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,8 +26,8 @@ namespace Doctrine\Common\Collections\Expr;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-abstract class ExpressionVisitor
-{
+abstract class ExpressionVisitor {
+
     /**
      * Converts a comparison expression into the target query language output.
      *
@@ -63,8 +64,7 @@ abstract class ExpressionVisitor
      *
      * @throws \RuntimeException
      */
-    public function dispatch(Expression $expr)
-    {
+    public function dispatch(Expression $expr) {
         switch (true) {
             case ($expr instanceof Comparison):
                 return $this->walkComparison($expr);
@@ -79,4 +79,5 @@ abstract class ExpressionVisitor
                 throw new \RuntimeException("Unknown Expression " . get_class($expr));
         }
     }
+
 }

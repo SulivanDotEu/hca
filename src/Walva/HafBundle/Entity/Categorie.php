@@ -17,6 +17,15 @@ class Categorie
     public function __toString() {
         return $this->getNomFr();
     }
+    
+    public function content($locale){
+        if($locale == "fr"){
+            return $this->getNomFr();
+        }
+        if($locale == "nl"){
+            return $this->getNomNl();
+        }
+    }
 
     
     /**

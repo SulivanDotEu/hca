@@ -1,22 +1,21 @@
 <?php
+
 namespace Doctrine\Tests\Common\Collections;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\Common\Collections\Expr\CompositeExpression;
 
-class CriteriaTest extends \PHPUnit_Framework_TestCase
-{
-    public function testCreate()
-    {
+class CriteriaTest extends \PHPUnit_Framework_TestCase {
+
+    public function testCreate() {
         $criteria = Criteria::create();
 
         $this->assertInstanceOf("Doctrine\Common\Collections\Criteria", $criteria);
     }
 
-    public function testConstructor()
-    {
-        $expr     = new Comparison("field", "=", "value");
+    public function testConstructor() {
+        $expr = new Comparison("field", "=", "value");
         $criteria = new Criteria($expr, array("foo" => "ASC"), 10, 20);
 
         $this->assertSame($expr, $criteria->getWhereExpression());
@@ -25,9 +24,8 @@ class CriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(20, $criteria->getMaxResults());
     }
 
-    public function testWhere()
-    {
-        $expr     = new Comparison("field", "=", "value");
+    public function testWhere() {
+        $expr = new Comparison("field", "=", "value");
         $criteria = new Criteria();
 
         $criteria->where($expr);
@@ -35,9 +33,8 @@ class CriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expr, $criteria->getWhereExpression());
     }
 
-    public function testAndWhere()
-    {
-        $expr     = new Comparison("field", "=", "value");
+    public function testAndWhere() {
+        $expr = new Comparison("field", "=", "value");
         $criteria = new Criteria();
 
         $criteria->where($expr);
@@ -51,9 +48,8 @@ class CriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array($expr, $expr), $where->getExpressionList());
     }
 
-    public function testOrWhere()
-    {
-        $expr     = new Comparison("field", "=", "value");
+    public function testOrWhere() {
+        $expr = new Comparison("field", "=", "value");
         $criteria = new Criteria();
 
         $criteria->where($expr);
@@ -67,16 +63,15 @@ class CriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array($expr, $expr), $where->getExpressionList());
     }
 
-    public function testOrderings()
-    {
+    public function testOrderings() {
         $criteria = Criteria::create()
-            ->orderBy(array("foo" => "ASC"));
+                ->orderBy(array("foo" => "ASC"));
 
         $this->assertEquals(array("foo" => "ASC"), $criteria->getOrderings());
     }
 
-    public function testExpr()
-    {
+    public function testExpr() {
         $this->assertInstanceOf('Doctrine\Common\Collections\ExpressionBuilder', Criteria::expr());
     }
+
 }

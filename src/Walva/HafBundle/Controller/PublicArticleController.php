@@ -16,6 +16,15 @@ use Walva\HafBundle\Entity\Tag;
  */
 class PublicArticleController extends Controller {
 
+    public $nombreArticleParPage = 10;
+
+    public function switchLocaleAction($locale = "fr") {
+        //$request = $this->getRequest();
+        $this->getRequest()->getSession()->set('_locale', $locale);
+        //var_dump($request->getLocale());
+        return $this->redirect($this->generateUrl('article_public'));
+    }
+
     public function bigListAction() {
         $repositoryCat = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Categorie');
         $repositoryTag = $this->getDoctrine()->getManager()->getRepository('WalvaHafBundle:Tag');
@@ -26,7 +35,7 @@ class PublicArticleController extends Controller {
         return $this->render('WalvaHafBundle:Article:public\big_list.html.twig', array(
                     'tags' => $tags,
                     'categories' => $categories
-                ));
+        ));
     }
 
     public function menuAction($nombre) {
@@ -39,25 +48,29 @@ class PublicArticleController extends Controller {
         );
         return $this->render('WalvaHafBundle:Article:public\menu.html.twig', array(
                     'entities' => $entities
-                ));
+        ));
     }
 
     /**
      * Lists all Article entities.
      *
      */
-    public function indexAction($page = 1, $nombre = 10, Categorie $categorie = null) {
-        $session = new Session();
-        $session->start();
+    public function indexAction($page = 1, $nombre = 0, Categorie $categorie = null) {
+        if ($nombre == 0)
+            $nombre = $this->nombreArticleParPage;
 
         $em = $this->getDoctrine()->getManager();
-        $lm = $this->container->get('walva_haf.langue');
+        $repository = $em->getRepository('WalvaHafBundle:Article');
 
-        $entities = $em->getRepository('WalvaHafBundle:Article')->findBy(array(), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
+        $request = $this->getRequest();
+        $locale = $request->getLocale();
+        $entities = $em->getRepository('WalvaHafBundle:Article')->findByLangue($locale, array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
+        //$entities = $em->getRepository('WalvaHafBundle:Article')->findBy(array(), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
 
-        $qb = $em->createQueryBuilder();
+        $qb = $repository->createQueryBuilder('a');
         $qb->select('count(a.id)');
-        $qb->from('WalvaHafBundle:Article', 'a');
+        //$qb->from('WalvaHafBundle:Article', 'a');
+        $qb->where($qb->expr()->eq('a.langue', "'".$locale."'"));
 
         $pageCount = ceil($qb->getQuery()->getSingleScalarResult() / $nombre);
 
@@ -73,18 +86,21 @@ class PublicArticleController extends Controller {
                     'entities' => $entities,
                     'page' => $page,
                     'next' => $next,
-                ));
+        ));
     }
 
-    public function listByCategorieAction($page = 1, $nombre = 10, Categorie $categorie = null) {
-        $session = new Session();
-        $session->start();
-
+    public function listByCategorieAction($page = 1, $nombre = 0, Categorie $categorie = null) {
+        if ($nombre == 0)
+            $nombre = $this->nombreArticleParPage;
         $em = $this->getDoctrine()->getManager();
-        $lm = $this->container->get('walva_haf.langue');
-
+        //$lm = $this->container->get('walva_haf.langue');
+        $request = $this->getRequest();
+        $locale = $request->getLocale();
         $entities = $em->getRepository('WalvaHafBundle:Article')->findBy(
-                array('categorie' => $categorie), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
+                array('categorie' => $categorie,
+                    'langue' => $locale),
+                array('dateCreation' => 'DESC'),
+                $nombre, $nombre * ($page - 1 ));
 
 
         $count = count($em->getRepository('WalvaHafBundle:Article')->findBy(array('categorie' => $categorie)));
@@ -104,16 +120,16 @@ class PublicArticleController extends Controller {
                     'categorie' => $categorie,
                     'page' => $page,
                     'next' => $next,
-                ));
+        ));
     }
 
-    public function listByTagAction($page = 1, $nombre = 10, Tag $tag = null) {
-        $session = new Session();
-        $session->start();
+    public function listByTagAction($page = 1, $nombre = 0, Tag $tag = null) {
+        if ($nombre == 0)
+            $nombre = $this->nombreArticleParPage;
 
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('WalvaHafBundle:Article');
-        $lm = $this->container->get('walva_haf.langue');
+        //$lm = $this->container->get('walva_haf.langue');
 
         $entities = $repository->findBy(
                 array('tag' => $tag), array('dateCreation' => 'DESC'), $nombre, $nombre * ($page - 1 ));
@@ -137,7 +153,7 @@ class PublicArticleController extends Controller {
                     'tag' => $tag,
                     'page' => $page,
                     'next' => $next,
-                ));
+        ));
     }
 
     /**
@@ -160,7 +176,7 @@ class PublicArticleController extends Controller {
         return $this->render('WalvaHafBundle:Article:new.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
-                ));
+        ));
     }
 
     /**
@@ -174,7 +190,7 @@ class PublicArticleController extends Controller {
         $form = $this->createForm(new ArticleType(), $entity, array(
             'action' => $this->generateUrl('article_create'),
             'method' => 'POST',
-                ));
+        ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
 

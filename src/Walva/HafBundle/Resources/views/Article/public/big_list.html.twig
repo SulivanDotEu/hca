@@ -12,18 +12,18 @@
 
 
 {% block main_content -%}
-<h1>Nos articles et nouvelles</h1>
+<h1>{{'Nos articles et nouvelles'|trans}}</h1>
 <ul class="bigList">
 
         <li>
             <a href="{{path('article_public')}}">
-Toutes nos publications</a>
+{{'Toutes nos publications'|trans}}</a>
             </li>
 
             
 </ul>
 <hr/>
-<h2>La liste de nos catégories</h2>
+<h2>{{'La liste de nos catégories'|trans}}</h2>
 
 <ul class="bigList">
 {% for categorie in categories %}
@@ -37,7 +37,7 @@ Toutes nos publications</a>
             
 </ul>
 <hr/>
-<h2>La liste de nos tags</h2>
+<h2>{{'La liste de nos tags'|trans}}</h2>
 
 <ul class="bigList">
 {% for tag in tags %}

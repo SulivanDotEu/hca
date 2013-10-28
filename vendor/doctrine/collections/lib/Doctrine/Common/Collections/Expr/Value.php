@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,8 +20,8 @@
 
 namespace Doctrine\Common\Collections\Expr;
 
-class Value implements Expression
-{
+class Value implements Expression {
+
     /**
      * @var mixed
      */
@@ -29,24 +30,22 @@ class Value implements Expression
     /**
      * @param mixed $value
      */
-    public function __construct($value)
-    {
+    public function __construct($value) {
         $this->value = $value;
     }
 
     /**
      * @return mixed
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visit(ExpressionVisitor $visitor)
-    {
+    public function visit(ExpressionVisitor $visitor) {
         return $visitor->walkValue($this);
     }
+
 }

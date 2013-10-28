@@ -12,7 +12,7 @@
 
 
 {% block main_content -%}
-<h1>Nos derniers articles et nouvelles</h1>
+<h1>{{'Nos derniers articles et nouvelles' | trans}}</h1>
 <hr/>
 
 {% for entity in entities %}
@@ -38,22 +38,22 @@
                 {{ entity.titre }}</a>
             </h2>
             <p class="byline ">
-                <span class="date published " title="">{{ entity.dateCreation|date("d/m/Y", "Europe/Paris") }}</span>  par <span class="author vcard">
-                    <span class="fn"><a href="http://physiciansfolia.com/?author=1" class="fn n" title="admin" rel="author"> {{ entity.auteur }}</a>
+                <span class="date published " title="">{{ entity.dateCreation|date("d/m/Y", "Europe/Paris") }}</span> <!--  par <span class="author vcard">
+                    <span class="fn"><a href="http://physiciansfolia.com/?author=1" class="fn n" title="admin" rel="author"> {{ entity.auteur }}</a>-->
                     </span>
                 </span>
                 <br>
-                <span class="label label-inverse">{{ entity.categorie }}</span>
+                <span class="label label-inverse">{% if entity.categorie is not null %}{{ entity.categorie.content(app.request.locale) }}{%endif%}</span>
             {% if entity.tag is not null %}
             {% for tag in entity.tag %}
-                <span class="label label-success">{{ tag }}</span>
+                <span class="label label-success">{{ tag.content(app.request.locale) }}</span>
             {% endfor %}
 
             {% endif %}
             </p>
 
-            <p>{{ entity.Resume}}
-                <a href="{{ path('article_public_show', { 'id': entity.id }) }}" class="more-link">[En savoir plus...]</a></p></div>
+            <p>{{ entity.resume}}
+                <a href="{{ path('article_public_show', { 'id': entity.id }) }}" class="more-link">[{{'En savoir plus...' | trans}}]</a></p></div>
 
     </div>
     <hr/>
@@ -76,12 +76,12 @@
   <li class="next {% if not next %}disabled {% endif%}">
       {% if next  %}
           {% if categorie is defined %}
-          <a href="{{ path('article_public_list_categorie_and_page', { 'page': page + 1, 'id':categorie.id }) }}">Suivant &rarr;</a>
+          <a href="{{ path('article_public_list_categorie_and_page', { 'page': page + 1, 'id':categorie.id }) }}">{{'Suivant' | trans}} &rarr;</a>
         
 {% elseif tag is defined%}  
-          <a href="{{ path('article_public_list_tag_and_page', { 'page': page + 1, 'id':tag.id }) }}">Suivant &rarr;</a>
+          <a href="{{ path('article_public_list_tag_and_page', { 'page': page + 1, 'id':tag.id }) }}">{{'Suivant' | trans}} &rarr;</a>
 {% else %}  
-          <a href="{{ path('article_public_list', { 'page': page + 1 }) }}">Suivant &rarr;</a>
+          <a href="{{ path('article_public_list', { 'page': page + 1 }) }}">{{'Suivant' | trans}} &rarr;</a>
 
         {% endif %}
     {% else %}

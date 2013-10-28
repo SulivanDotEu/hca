@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,57 +26,50 @@ use Doctrine\Common\Collections\ExpressionBuilder;
 /**
  * @group DDC-1637
  */
-class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
-{
+class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase {
+
     private $visitor;
     private $builder;
 
-    public function setUp()
-    {
+    public function setUp() {
         $this->visitor = new ClosureExpressionVisitor();
         $this->builder = new ExpressionBuilder();
     }
 
-    public function testGetObjectFieldValueIsAccessor()
-    {
+    public function testGetObjectFieldValueIsAccessor() {
         $object = new TestObject(1, 2, true);
 
         $this->assertTrue($this->visitor->getObjectFieldValue($object, 'baz'));
     }
 
-    public function testGetObjectFieldValueMagicCallMethod()
-    {
+    public function testGetObjectFieldValueMagicCallMethod() {
         $object = new TestObject(1, 2, true, 3);
 
         $this->assertEquals(3, $this->visitor->getObjectFieldValue($object, 'qux'));
     }
 
-    public function testWalkEqualsComparison()
-    {
+    public function testWalkEqualsComparison() {
         $closure = $this->visitor->walkComparison($this->builder->eq("foo", 1));
 
         $this->assertTrue($closure(new TestObject(1)));
         $this->assertFalse($closure(new TestObject(2)));
     }
 
-    public function testWalkNotEqualsComparison()
-    {
+    public function testWalkNotEqualsComparison() {
         $closure = $this->visitor->walkComparison($this->builder->neq("foo", 1));
 
         $this->assertFalse($closure(new TestObject(1)));
         $this->assertTrue($closure(new TestObject(2)));
     }
 
-    public function testWalkLessThanComparison()
-    {
+    public function testWalkLessThanComparison() {
         $closure = $this->visitor->walkComparison($this->builder->lt("foo", 1));
 
         $this->assertFalse($closure(new TestObject(1)));
         $this->assertTrue($closure(new TestObject(0)));
     }
 
-    public function testWalkLessThanEqualsComparison()
-    {
+    public function testWalkLessThanEqualsComparison() {
         $closure = $this->visitor->walkComparison($this->builder->lte("foo", 1));
 
         $this->assertFalse($closure(new TestObject(2)));
@@ -83,8 +77,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($closure(new TestObject(0)));
     }
 
-    public function testWalkGreaterThanEqualsComparison()
-    {
+    public function testWalkGreaterThanEqualsComparison() {
         $closure = $this->visitor->walkComparison($this->builder->gte("foo", 1));
 
         $this->assertTrue($closure(new TestObject(2)));
@@ -92,8 +85,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($closure(new TestObject(0)));
     }
 
-    public function testWalkGreaterThanComparison()
-    {
+    public function testWalkGreaterThanComparison() {
         $closure = $this->visitor->walkComparison($this->builder->gt("foo", 1));
 
         $this->assertTrue($closure(new TestObject(2)));
@@ -101,8 +93,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($closure(new TestObject(0)));
     }
 
-    public function testWalkInComparison()
-    {
+    public function testWalkInComparison() {
         $closure = $this->visitor->walkComparison($this->builder->in("foo", array(1, 2, 3)));
 
         $this->assertTrue($closure(new TestObject(2)));
@@ -110,8 +101,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($closure(new TestObject(0)));
     }
 
-    public function testWalkNotInComparison()
-    {
+    public function testWalkNotInComparison() {
         $closure = $this->visitor->walkComparison($this->builder->notIn("foo", array(1, 2, 3)));
 
         $this->assertFalse($closure(new TestObject(1)));
@@ -120,21 +110,18 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($closure(new TestObject(4)));
     }
 
-    public function testWalkContainsComparison()
-    {
+    public function testWalkContainsComparison() {
         $closure = $this->visitor->walkComparison($this->builder->contains('foo', 'hello'));
 
         $this->assertTrue($closure(new TestObject('hello world')));
         $this->assertFalse($closure(new TestObject('world')));
     }
 
-    public function testWalkAndCompositeExpression()
-    {
+    public function testWalkAndCompositeExpression() {
         $closure = $this->visitor->walkCompositeExpression(
-            $this->builder->andX(
-                $this->builder->eq("foo", 1),
-                $this->builder->eq("bar", 1)
-            )
+                $this->builder->andX(
+                        $this->builder->eq("foo", 1), $this->builder->eq("bar", 1)
+                )
         );
 
         $this->assertTrue($closure(new TestObject(1, 1)));
@@ -143,13 +130,11 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($closure(new TestObject(0, 0)));
     }
 
-    public function testWalkOrCompositeExpression()
-    {
+    public function testWalkOrCompositeExpression() {
         $closure = $this->visitor->walkCompositeExpression(
-            $this->builder->orX(
-                $this->builder->eq("foo", 1),
-                $this->builder->eq("bar", 1)
-            )
+                $this->builder->orX(
+                        $this->builder->eq("foo", 1), $this->builder->eq("bar", 1)
+                )
         );
 
         $this->assertTrue($closure(new TestObject(1, 1)));
@@ -158,8 +143,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($closure(new TestObject(0, 0)));
     }
 
-    public function testSortByFieldAscending()
-    {
+    public function testSortByFieldAscending() {
         $objects = array(new TestObject("b"), new TestObject("a"), new TestObject("c"));
         $sort = ClosureExpressionVisitor::sortByField("foo");
 
@@ -170,8 +154,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("c", $objects[2]->getFoo());
     }
 
-    public function testSortByFieldDescending()
-    {
+    public function testSortByFieldDescending() {
         $objects = array(new TestObject("b"), new TestObject("a"), new TestObject("c"));
         $sort = ClosureExpressionVisitor::sortByField("foo", -1);
 
@@ -182,8 +165,7 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("a", $objects[2]->getFoo());
     }
 
-    public function testSortDelegate()
-    {
+    public function testSortDelegate() {
         $objects = array(new TestObject("a", "c"), new TestObject("a", "b"), new TestObject("a", "a"));
         $sort = ClosureExpressionVisitor::sortByField("bar", 1);
         $sort = ClosureExpressionVisitor::sortByField("foo", 1, $sort);
@@ -195,49 +177,45 @@ class ClosureExpressionVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("c", $objects[2]->getBar());
     }
 
-    public function testArrayComparison()
-    {
+    public function testArrayComparison() {
         $closure = $this->visitor->walkComparison($this->builder->eq("foo", 42));
 
         $this->assertTrue($closure(array('foo' => 42)));
     }
+
 }
 
-class TestObject
-{
+class TestObject {
+
     private $foo;
     private $bar;
     private $baz;
     private $qux;
 
-    public function __construct($foo = null, $bar = null, $baz = null, $qux = null)
-    {
+    public function __construct($foo = null, $bar = null, $baz = null, $qux = null) {
         $this->foo = $foo;
         $this->bar = $bar;
         $this->baz = $baz;
         $this->qux = $qux;
     }
 
-    public function __call($name, $arguments)
-    {
+    public function __call($name, $arguments) {
         if ('getqux' === $name) {
             return $this->qux;
         }
     }
 
-    public function getFoo()
-    {
+    public function getFoo() {
         return $this->foo;
     }
 
-    public function getBar()
-    {
+    public function getBar() {
         return $this->bar;
     }
 
-    public function isBaz()
-    {
+    public function isBaz() {
         return $this->baz;
     }
+
 }
 

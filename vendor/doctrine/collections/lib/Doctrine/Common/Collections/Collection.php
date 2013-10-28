@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +20,10 @@
 
 namespace Doctrine\Common\Collections;
 
-use Closure, Countable, IteratorAggregate, ArrayAccess;
+use Closure,
+    Countable,
+    IteratorAggregate,
+    ArrayAccess;
 
 /**
  * The missing (SPL) Collection/Array/OrderedMap interface.
@@ -43,8 +47,8 @@ use Closure, Countable, IteratorAggregate, ArrayAccess;
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
  */
-interface Collection extends Countable, IteratorAggregate, ArrayAccess
-{
+interface Collection extends Countable, IteratorAggregate, ArrayAccess {
+
     /**
      * Adds an element at the end of the collection.
      *

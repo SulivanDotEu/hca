@@ -35,7 +35,6 @@ class PublicLivreController extends Controller {
       $entities = $em->getRepository('WalvaHafBundle:Livre')->findAll();
 
       $em = $this->getDoctrine()->getManager();
-      $lm = $this->container->get('walva_haf.langue');
 
       $qb = $em->createQueryBuilder();
       $qb->select('count(a.id)');

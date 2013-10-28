@@ -21,7 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         
         "stof/doctrine-extensions-bundle": "~1.1@dev",
-        "winzou/console-bundle": "dev-master"
+        "winzou/console-bundle": "1.*"
     },
     "scripts": {
         "post-install-cmd": [

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,15 +30,14 @@ use Doctrine\Common\Collections\Expr\Value;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since  2.3
  */
-class ExpressionBuilder
-{
+class ExpressionBuilder {
+
     /**
      * @param mixed $x
      *
      * @return CompositeExpression
      */
-    public function andX($x = null)
-    {
+    public function andX($x = null) {
         return new CompositeExpression(CompositeExpression::TYPE_AND, func_get_args());
     }
 
@@ -46,8 +46,7 @@ class ExpressionBuilder
      *
      * @return CompositeExpression
      */
-    public function orX($x = null)
-    {
+    public function orX($x = null) {
         return new CompositeExpression(CompositeExpression::TYPE_OR, func_get_args());
     }
 
@@ -57,8 +56,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function eq($field, $value)
-    {
+    public function eq($field, $value) {
         return new Comparison($field, Comparison::EQ, new Value($value));
     }
 
@@ -68,8 +66,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function gt($field, $value)
-    {
+    public function gt($field, $value) {
         return new Comparison($field, Comparison::GT, new Value($value));
     }
 
@@ -79,8 +76,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function lt($field, $value)
-    {
+    public function lt($field, $value) {
         return new Comparison($field, Comparison::LT, new Value($value));
     }
 
@@ -90,8 +86,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function gte($field, $value)
-    {
+    public function gte($field, $value) {
         return new Comparison($field, Comparison::GTE, new Value($value));
     }
 
@@ -101,8 +96,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function lte($field, $value)
-    {
+    public function lte($field, $value) {
         return new Comparison($field, Comparison::LTE, new Value($value));
     }
 
@@ -112,8 +106,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function neq($field, $value)
-    {
+    public function neq($field, $value) {
         return new Comparison($field, Comparison::NEQ, new Value($value));
     }
 
@@ -122,8 +115,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function isNull($field)
-    {
+    public function isNull($field) {
         return new Comparison($field, Comparison::IS, new Value(null));
     }
 
@@ -133,8 +125,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function in($field, array $values)
-    {
+    public function in($field, array $values) {
         return new Comparison($field, Comparison::IN, new Value($values));
     }
 
@@ -144,8 +135,7 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function notIn($field, array $values)
-    {
+    public function notIn($field, array $values) {
         return new Comparison($field, Comparison::NIN, new Value($values));
     }
 
@@ -155,8 +145,8 @@ class ExpressionBuilder
      *
      * @return Comparison
      */
-    public function contains($field, $value)
-    {
+    public function contains($field, $value) {
         return new Comparison($field, Comparison::CONTAINS, new Value($value));
     }
+
 }

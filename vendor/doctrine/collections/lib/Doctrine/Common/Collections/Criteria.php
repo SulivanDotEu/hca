@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,12 +29,12 @@ use Doctrine\Common\Collections\Expr\CompositeExpression;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since 2.3
  */
-class Criteria
-{
+class Criteria {
     /**
      * @var string
      */
-    const ASC  = 'ASC';
+
+    const ASC = 'ASC';
 
     /**
      * @var string
@@ -70,8 +71,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public static function create()
-    {
+    public static function create() {
         return new static();
     }
 
@@ -80,8 +80,7 @@ class Criteria
      *
      * @return \Doctrine\Common\Collections\ExpressionBuilder
      */
-    public static function expr()
-    {
+    public static function expr() {
         if (self::$expressionBuilder === null) {
             self::$expressionBuilder = new ExpressionBuilder();
         }
@@ -96,12 +95,11 @@ class Criteria
      * @param int|null   $firstResult
      * @param int|null   $maxResults
      */
-    public function __construct(Expression $expression = null, array $orderings = null, $firstResult = null, $maxResults = null)
-    {
-        $this->expression  = $expression;
-        $this->orderings   = $orderings;
+    public function __construct(Expression $expression = null, array $orderings = null, $firstResult = null, $maxResults = null) {
+        $this->expression = $expression;
+        $this->orderings = $orderings;
         $this->firstResult = $firstResult;
-        $this->maxResults  = $maxResults;
+        $this->maxResults = $maxResults;
     }
 
     /**
@@ -111,8 +109,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public function where(Expression $expression)
-    {
+    public function where(Expression $expression) {
         $this->expression = $expression;
         return $this;
     }
@@ -125,8 +122,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public function andWhere(Expression $expression)
-    {
+    public function andWhere(Expression $expression) {
         if ($this->expression === null) {
             return $this->where($expression);
         }
@@ -146,8 +142,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public function orWhere(Expression $expression)
-    {
+    public function orWhere(Expression $expression) {
         if ($this->expression === null) {
             return $this->where($expression);
         }
@@ -164,8 +159,7 @@ class Criteria
      *
      * @return Expression|null
      */
-    public function getWhereExpression()
-    {
+    public function getWhereExpression() {
         return $this->expression;
     }
 
@@ -174,8 +168,7 @@ class Criteria
      *
      * @return array
      */
-    public function getOrderings()
-    {
+    public function getOrderings() {
         return $this->orderings;
     }
 
@@ -191,8 +184,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public function orderBy(array $orderings)
-    {
+    public function orderBy(array $orderings) {
         $this->orderings = $orderings;
         return $this;
     }
@@ -202,8 +194,7 @@ class Criteria
      *
      * @return int|null
      */
-    public function getFirstResult()
-    {
+    public function getFirstResult() {
         return $this->firstResult;
     }
 
@@ -214,8 +205,7 @@ class Criteria
      *
      * @return Criteria
      */
-    public function setFirstResult($firstResult)
-    {
+    public function setFirstResult($firstResult) {
         $this->firstResult = $firstResult;
         return $this;
     }
@@ -225,8 +215,7 @@ class Criteria
      *
      * @return int|null
      */
-    public function getMaxResults()
-    {
+    public function getMaxResults() {
         return $this->maxResults;
     }
 
@@ -237,9 +226,9 @@ class Criteria
      *
      * @return Criteria
      */
-    public function setMaxResults($maxResults)
-    {
+    public function setMaxResults($maxResults) {
         $this->maxResults = $maxResults;
         return $this;
     }
+
 }

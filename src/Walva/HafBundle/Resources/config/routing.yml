@@ -9,3 +9,7 @@ walva_haf_admin:
 static_articles_et_nouvelles:
     pattern:  /contact
     defaults: { _controller: "WalvaHafBundle:StaticContent:contact" }
+    
+switchlocale:
+   pattern: /locale/{locale}
+   defaults: { _controller: WalvaHafBundle:PublicArticle:switchlocale }

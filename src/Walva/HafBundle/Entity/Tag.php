@@ -40,6 +40,14 @@ class Tag
      */
     private $contenuNl;
 
+    public function content($locale){
+        if($locale == "fr"){
+            return $this->getContenuFr();
+        }
+        if($locale == "nl"){
+            return $this->getContenuNl();
+        }
+    }
 
     /**
      * Get id

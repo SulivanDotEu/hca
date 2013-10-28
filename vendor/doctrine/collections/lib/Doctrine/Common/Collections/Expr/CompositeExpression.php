@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,8 +26,8 @@ namespace Doctrine\Common\Collections\Expr;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since  2.3
  */
-class CompositeExpression implements Expression
-{
+class CompositeExpression implements Expression {
+
     const TYPE_AND = 'AND';
     const TYPE_OR = 'OR';
 
@@ -46,15 +47,14 @@ class CompositeExpression implements Expression
      *
      * @throws \RuntimeException
      */
-    public function __construct($type, array $expressions)
-    {
+    public function __construct($type, array $expressions) {
         $this->type = $type;
 
         foreach ($expressions as $expr) {
             if ($expr instanceof Value) {
                 throw new \RuntimeException("Values are not supported expressions as children of and/or expressions.");
             }
-            if ( ! ($expr instanceof Expression)) {
+            if (!($expr instanceof Expression)) {
                 throw new \RuntimeException("No expression given to CompositeExpression.");
             }
 
@@ -67,24 +67,22 @@ class CompositeExpression implements Expression
      *
      * @return Expression[]
      */
-    public function getExpressionList()
-    {
+    public function getExpressionList() {
         return $this->expressions;
     }
 
     /**
      * @return string
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visit(ExpressionVisitor $visitor)
-    {
+    public function visit(ExpressionVisitor $visitor) {
         return $visitor->walkCompositeExpression($this);
     }
+
 }

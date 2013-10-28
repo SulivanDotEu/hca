@@ -5,20 +5,18 @@ namespace Doctrine\Tests\Common\Collections;
 use Doctrine\Tests;
 use Doctrine\Common\Collections\Criteria;
 
-class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
-{
+class CollectionTest extends \Doctrine\Tests\DoctrineTestCase {
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $_coll;
 
-    protected function setUp()
-    {
+    protected function setUp() {
         $this->_coll = new \Doctrine\Common\Collections\ArrayCollection;
     }
 
-    public function testIssetAndUnset()
-    {
+    public function testIssetAndUnset() {
         $this->assertFalse(isset($this->_coll[0]));
         $this->_coll->add('testing');
         $this->assertTrue(isset($this->_coll[0]));
@@ -26,46 +24,48 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse(isset($this->_coll[0]));
     }
 
-    public function testToString()
-    {
+    public function testToString() {
         $this->_coll->add('testing');
         $this->assertTrue(is_string((string) $this->_coll));
     }
 
-    public function testRemovingNonExistentEntryReturnsNull()
-    {
+    public function testRemovingNonExistentEntryReturnsNull() {
         $this->assertEquals(null, $this->_coll->remove('testing_does_not_exist'));
     }
 
-    public function testExists()
-    {
+    public function testExists() {
         $this->_coll->add("one");
         $this->_coll->add("two");
-        $exists = $this->_coll->exists(function($k, $e) { return $e == "one"; });
+        $exists = $this->_coll->exists(function($k, $e) {
+                    return $e == "one";
+                });
         $this->assertTrue($exists);
-        $exists = $this->_coll->exists(function($k, $e) { return $e == "other"; });
+        $exists = $this->_coll->exists(function($k, $e) {
+                    return $e == "other";
+                });
         $this->assertFalse($exists);
     }
 
-    public function testMap()
-    {
+    public function testMap() {
         $this->_coll->add(1);
         $this->_coll->add(2);
-        $res = $this->_coll->map(function($e) { return $e * 2; });
+        $res = $this->_coll->map(function($e) {
+                    return $e * 2;
+                });
         $this->assertEquals(array(2, 4), $res->toArray());
     }
 
-    public function testFilter()
-    {
+    public function testFilter() {
         $this->_coll->add(1);
         $this->_coll->add("foo");
         $this->_coll->add(3);
-        $res = $this->_coll->filter(function($e) { return is_numeric($e); });
+        $res = $this->_coll->filter(function($e) {
+                    return is_numeric($e);
+                });
         $this->assertEquals(array(0 => 1, 2 => 3), $res->toArray());
     }
 
-    public function testFirstAndLast()
-    {
+    public function testFirstAndLast() {
         $this->_coll->add('one');
         $this->_coll->add('two');
 
@@ -73,8 +73,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertEquals($this->_coll->last(), 'two');
     }
 
-    public function testArrayAccess()
-    {
+    public function testArrayAccess() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
 
@@ -85,79 +84,74 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertEquals($this->_coll->count(), 1);
     }
 
-    public function testContainsKey()
-    {
+    public function testContainsKey() {
         $this->_coll[5] = 'five';
         $this->assertTrue($this->_coll->containsKey(5));
     }
 
-    public function testContains()
-    {
+    public function testContains() {
         $this->_coll[0] = 'test';
         $this->assertTrue($this->_coll->contains('test'));
     }
 
-    public function testSearch()
-    {
+    public function testSearch() {
         $this->_coll[0] = 'test';
         $this->assertEquals(0, $this->_coll->indexOf('test'));
     }
 
-    public function testGet()
-    {
+    public function testGet() {
         $this->_coll[0] = 'test';
         $this->assertEquals('test', $this->_coll->get(0));
     }
 
-    public function testGetKeys()
-    {
+    public function testGetKeys() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $this->assertEquals(array(0, 1), $this->_coll->getKeys());
     }
 
-    public function testGetValues()
-    {
+    public function testGetValues() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $this->assertEquals(array('one', 'two'), $this->_coll->getValues());
     }
 
-    public function testCount()
-    {
+    public function testCount() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $this->assertEquals($this->_coll->count(), 2);
         $this->assertEquals(count($this->_coll), 2);
     }
 
-    public function testForAll()
-    {
+    public function testForAll() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
-        $this->assertEquals($this->_coll->forAll(function($k, $e) { return is_string($e); }), true);
-        $this->assertEquals($this->_coll->forAll(function($k, $e) { return is_array($e); }), false);
+        $this->assertEquals($this->_coll->forAll(function($k, $e) {
+                            return is_string($e);
+                        }), true);
+        $this->assertEquals($this->_coll->forAll(function($k, $e) {
+                            return is_array($e);
+                        }), false);
     }
 
-    public function testPartition()
-    {
+    public function testPartition() {
         $this->_coll[] = true;
         $this->_coll[] = false;
-        $partition = $this->_coll->partition(function($k, $e) { return $e == true; });
+        $partition = $this->_coll->partition(function($k, $e) {
+                    return $e == true;
+                });
         $this->assertEquals($partition[0][0], true);
         $this->assertEquals($partition[1][0], false);
     }
 
-    public function testClear()
-    {
+    public function testClear() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $this->_coll->clear();
         $this->assertEquals($this->_coll->isEmpty(), true);
     }
 
-    public function testRemove()
-    {
+    public function testRemove() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $el = $this->_coll->remove(0);
@@ -167,8 +161,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertNull($this->_coll->remove(0));
     }
 
-    public function testRemoveElement()
-    {
+    public function testRemoveElement() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
 
@@ -177,8 +170,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($this->_coll->removeElement('two'));
     }
 
-    public function testSlice()
-    {
+    public function testSlice() {
         $this->_coll[] = 'one';
         $this->_coll[] = 'two';
         $this->_coll[] = 'three';
@@ -194,8 +186,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertEquals(array(1 => 'two'), $slice);
     }
 
-    public function fillMatchingFixture()
-    {
+    public function fillMatchingFixture() {
         $std1 = new \stdClass();
         $std1->foo = "bar";
         $this->_coll[] = $std1;
@@ -208,8 +199,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @group DDC-1637
      */
-    public function testMatching()
-    {
+    public function testMatching() {
         $this->fillMatchingFixture();
 
         $col = $this->_coll->matching(new Criteria(Criteria::expr()->eq("foo", "bar")));
@@ -221,8 +211,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @group DDC-1637
      */
-    public function testMatchingOrdering()
-    {
+    public function testMatchingOrdering() {
         $this->fillMatchingFixture();
 
         $col = $this->_coll->matching(new Criteria(null, array('foo' => 'DESC')));
@@ -237,8 +226,7 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @group DDC-1637
      */
-    public function testMatchingSlice()
-    {
+    public function testMatchingSlice() {
         $this->fillMatchingFixture();
 
         $col = $this->_coll->matching(new Criteria(null, null, 1, 1));
@@ -249,16 +237,15 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertEquals('baz', $col[0]->foo);
     }
 
-    public function testCanRemoveNullValuesByKey()
-    {
+    public function testCanRemoveNullValuesByKey() {
         $this->_coll->add(null);
         $this->_coll->remove(0);
         $this->assertTrue($this->_coll->isEmpty());
     }
 
-    public function testCanVerifyExistingKeysWithNullValues()
-    {
+    public function testCanVerifyExistingKeysWithNullValues() {
         $this->_coll->set('key', null);
         $this->assertTrue($this->_coll->containsKey('key'));
     }
+
 }

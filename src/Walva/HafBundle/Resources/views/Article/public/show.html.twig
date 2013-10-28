@@ -1,6 +1,13 @@
 {% extends 'WalvaHafBundle:Article:public/layout.html.twig' %}
 
 
+{% block meta_title %}
+{{ entity.resume}}
+{% endblock %}
+
+{% block title_supp %}
+{{ entity.titre}}
+{% endblock %}
 
 {% block breadcrumb %}
 {{ parent() }}
@@ -16,15 +23,14 @@
      aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false" 
      style="display: block;">
 
-    <span class="date published " title="">{{ entity.dateCreation|date("d/m/Y", "Europe/Paris") }}</span>  par <span class="author vcard">
-        <span class="fn"><a href="http://physiciansfolia.com/?author=1" class="fn n" title="admin" rel="author"> {{ entity.auteur }}</a>
+    <span class="date published " title="">{{ entity.dateCreation|date("d/m/Y", "Europe/Paris") }}</span>  
         </span>
     </span>
     <br>
+     <span class="label label-inverse">{% if entity.categorie is not null %}{{ entity.categorie.content(app.request.locale) }}{%endif%}</span>
             {% if entity.tag is not null %}
             {% for tag in entity.tag %}
-    <span class="label label-success">{{ tag }}</span>
-            {% endfor %}
+<span class="label label-success">{{ tag.content(app.request.locale) }}</span>            {% endfor %}
 
             {% endif %}
 
@@ -42,6 +48,10 @@
     {% if ref.contenu is not null %} 
   <dt>Contenu</dt>
   <dd>{{ref.contenu}}    </dd>
+  {% endif %}
+    {% if ref.url is not null %} 
+  <dt>URL</dt>
+  <dd>{{ref.url}}    </dd>
   {% endif %}
   <dt>Auteurs</dt>
   <dd>{% if ref.auteur is not null %} {{ref.auteur}}    {% endif %}</dd>

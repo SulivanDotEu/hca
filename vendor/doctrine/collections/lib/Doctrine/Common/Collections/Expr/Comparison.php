@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,18 +26,18 @@ namespace Doctrine\Common\Collections\Expr;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since  2.3
  */
-class Comparison implements Expression
-{
-    const EQ        = '=';
-    const NEQ       = '<>';
-    const LT        = '<';
-    const LTE       = '<=';
-    const GT        = '>';
-    const GTE       = '>=';
-    const IS        = 'IS';
-    const IN        = 'IN';
-    const NIN       = 'NIN';
-    const CONTAINS  = 'CONTAINS';
+class Comparison implements Expression {
+
+    const EQ = '=';
+    const NEQ = '<>';
+    const LT = '<';
+    const LTE = '<=';
+    const GT = '>';
+    const GTE = '>=';
+    const IS = 'IS';
+    const IN = 'IN';
+    const NIN = 'NIN';
+    const CONTAINS = 'CONTAINS';
 
     /**
      * @var string
@@ -58,9 +59,8 @@ class Comparison implements Expression
      * @param string $operator
      * @param mixed  $value
      */
-    public function __construct($field, $operator, $value)
-    {
-        if ( ! ($value instanceof Value)) {
+    public function __construct($field, $operator, $value) {
+        if (!($value instanceof Value)) {
             $value = new Value($value);
         }
 
@@ -72,32 +72,29 @@ class Comparison implements Expression
     /**
      * @return string
      */
-    public function getField()
-    {
+    public function getField() {
         return $this->field;
     }
 
     /**
      * @return Value
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
     /**
      * @return string
      */
-    public function getOperator()
-    {
+    public function getOperator() {
         return $this->op;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visit(ExpressionVisitor $visitor)
-    {
+    public function visit(ExpressionVisitor $visitor) {
         return $visitor->walkComparison($this);
     }
+
 }
